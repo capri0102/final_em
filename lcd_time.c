@@ -150,7 +150,7 @@ void * recv_msg(void * arg)   // read thread main
             case -1:
                 perror("select error :");
                 exit(0);
-                //TIME OUT
+            //TIME OUT
             case 0:
                 m_timeout = 1;
                 printf("Time out error\n");
