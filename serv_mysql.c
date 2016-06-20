@@ -96,7 +96,6 @@ void * handle_clnt(void * arg)
 	int i;
 	char msg[BUF_SIZE];
 	while(1){
-		printf("m_mysql_get start!\n");
 		/* Mysql query start */
 		query_stat = mysql_query(connection, "select * from a ORDER BY idx DESC limit 1");
 
@@ -104,22 +103,16 @@ void * handle_clnt(void * arg)
 			fprintf(stderr, "Mysql query error : %s", mysql_error(&conn));
 			exit(1);
 		}
-		else
-			printf("Mysql query get success\n");
-
 		sql_result = mysql_store_result(connection);
-
 		sql_row = mysql_fetch_row(sql_result);
-		printf("GET QUERY : %s\n", sql_row[1]);
 		strcpy(msg, sql_row[1]);
-
 		mysql_free_result(sql_result);
-		
-		printf("m_mysql_get end : %s\n", msg);
+		/* Mysql query end */
+
 		if((write(clnt_sock, msg, strlen(msg))) == -1)
 			break;
 		else
-			sleep(3);
+			sleep(10);
 	}
 	pthread_mutex_lock(&mutx);
 	for(i=0; i<clnt_cnt; i++)   // remove disconnected client
